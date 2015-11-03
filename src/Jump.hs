@@ -3,11 +3,11 @@ module Jump where
 import Control.Monad.Cont
 import Control.Monad.Identity
 
-rightNow :: (MonadCont m) => m (m a)
-rightNow = callCC $ \k -> let f = k f in return f
+label :: (MonadCont m) => m (m a)
+label = callCC $ \k -> let f = k f in return f
 
-goWhen :: (MonadCont m) => m (m a) -> m (m a)
-goWhen moment = do
+goto :: (MonadCont m) => m (m a) -> m (m a)
+goto moment = do
   jump <- moment
   moment
 
@@ -15,7 +15,7 @@ goWhen moment = do
 demoJump :: IO ()
 demoJump = flip runContT return $ do
   lift $ putStrLn "Start"
-  label <- rightNow
+  top <- label
   lift $ putStrLn "Spam"
-  goWhen label
+  goto top
   lift $ putStrLn "Never End"
