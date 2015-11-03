@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import RightNow
 
 main :: IO ()
-main = someFunc
+main = putStrLn "G'day."
